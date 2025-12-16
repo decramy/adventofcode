@@ -1,6 +1,7 @@
 #!/bin/env/python3
 
 c = 0
+ok = False
 
 with open("day2.txt") as file:
   items = file.read().strip().split(",")
@@ -11,15 +12,23 @@ with open("day2.txt") as file:
     r = range(int(l), int(r)+1)
     for i in r:
       i = str(i)
+      
       # als de lengte van het getal deelbaar is         
-      if len(i) % 2 == 0:
-        # splits in twee helften     
-        left,right = i[:len(i)//2], i[len(i)//2:] 
-        
-        # als de twee helften gelijk zijn
-        if left == right:
-          #print("found gelijk getal: %s" % i)
-          c += int(i)                                  
+      for delen in range(1,len(i)):
+        #print("range: %s delen: %i" % (i,delen))
+        # als de legte van het getal deelbaar is door het aantal delen
+        if (len(i) % delen == 0):
+          # splits in gelijke delen
+          parts = []
+          for p in range(0, len(i), delen):
+            parts.append(i[p:p+delen])
+          #print("  parts: %s" % parts)
+          # als alle delen gelijk zijn
+          if all(x == parts[0] for x in parts):
+            print("  found gelijk getal: %s" % i)
+            c += int(i)
+            break # we hebben het getal al invalid gemaakt, dus stop met verder zoeken
+                                        
     
 print(c)
     
